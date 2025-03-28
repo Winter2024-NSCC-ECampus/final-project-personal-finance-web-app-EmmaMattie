@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Personal Finance App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #e0f7f7;
+      color: #003f4f;
+    }
+
+    nav {
+      background-color: #007c91;
+      padding: 1em;
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ff6f61;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 3em auto;
+      padding: 2em;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 124, 145, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: #007c91;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.7em;
+      margin-top: 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 1.5em;
+      width: 100%;
+      padding: 0.75em;
+      background-color: #ff6f61;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e95d4c;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+    <a href="/transactions">Transactions</a>
+    <a href="/budget">Budget</a>
+    <a href="/investments">Investments</a>
+  </nav>
+
+  <div style="text-align: center; font-size: 0.9em; color: #666; margin-top: 5px;" id="datetime"></div>
+
+<script>
+    function updateTime() {
+        const now = new Date();
+        document.getElementById("datetime").innerText = now.toLocaleString();
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+</script>
+
+  <div class="container">
+    <h2>Login to Your Account</h2>
+    <form method="post" action="/login">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>
+

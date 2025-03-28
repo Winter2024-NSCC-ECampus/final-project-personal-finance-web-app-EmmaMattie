@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Transactions - Finance App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f9f9;
+      margin: 0;
+    }
+
+    nav {
+      background-color: #00695c;
+      padding: 1em;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffd600;
+    }
+
+    #datetime {
+      text-align: center;
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 60px auto;
+      background-color: #ffffff;
+      padding: 2em;
+      box-shadow: 0 0 10px #ccc;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .filters button {
+      background-color: #00695c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .filters button:hover {
+      background-color: #004d40;
+    }
+
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      padding: 0.8em 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    form {
+      margin-top: 40px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px;
+      width: 100%;
+      background-color: #00695c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    .clear-button {
+      background-color: #d32f2f;
+    }
+
+    .clear-button:hover {
+      background-color: #b71c1c;
+    }
+
+    .recurring-button {
+      background-color: #3f51b5;
+    }
+
+    .recurring-button:hover {
+      background-color: #303f9f;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #00695c;
+      color: #fff;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/login">Login</a>
+  <a href="/transactions">Transactions</a>
+  <a href="/budget">Budget</a>
+  <a href="/investments">Investments</a>
+</nav>
+
+<div id="datetime"></div>
+
+<div class="container">
+  <h2>Your Transactions</h2>
+
+  <div class="filters">
+    <button onclick="filterTransactions('all')">Show All</button>
+    <button onclick="filterTransactions('Income')">Income</button>
+    <button onclick="filterTransactions('Expense')">Expenses</button>
+  </div>
+
+  <ul id="transactionList">
+    <li data-type="Income">💰 Salary - $2500 (Income)</li>
+    <li data-type="Expense">🍔 Lunch - $12 (Expense)</li>
+    <li data-type="Expense">🎮 Steam Game - $40 (Expense)</li>
+    <li data-type="Expense">🎧 Headset - $200 (Expense)</li>      
+  </ul>
+
+  <form id="transactionForm">
+    <h2>Add New Transaction</h2>
+
+    <label for="type">Type:</label>
+    <select id="type" required>
+      <option value="Income">Income</option>
+      <option value="Expense">Expense</option>
+    </select>
+
+    <label for="category">Category:</label>
+    <select id="category" required>
+      <option value="Salary">Salary</option>
+      <option value="Groceries">Groceries</option>
+      <option value="Entertainment">Entertainment</option>
+      <option value="Utilities">Utilities</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="amount">Amount ($):</label>
+    <input type="number" id="amount" step="0.01" required>
+
+    <label for="tags">Tags:</label>
+    <input type="text" id="tags" placeholder="e.g. food, rent, bonus">
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" required>
+
+    <button type="submit">Add Transaction</button>
+  </form>
+
+  <button onclick="list.innerHTML = ''" class="clear-button">Clear All</button>
+  <button onclick="addRecurring()" class="recurring-button">Add Recurring Entries</button>
+</div>
+
+<div class="footer">
+  &copy; 2025 Personal Finance App — All rights reserved.
+</div>
+
+<script>
+  const form = document.getElementById('transactionForm');
+  const list = document.getElementById('transactionList');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const type = document.getElementById('type').value;
+    const category = document.getElementById('category').value;
+    const amount = parseFloat(document.getElementById('amount').value).toFixed(2);
+    const tags = document.getElementById('tags').value;
+    const date = document.getElementById('date').value;
+
+    const icon = type === "Income" ? "💰" : "💸";
+    const item = document.createElement('li');
+    item.textContent = `${icon} ${category} - $${amount} (${type}) — ${tags} on ${date}`;
+    item.setAttribute('data-type', type);
+
+    if (parseFloat(amount) > 500) {
+      item.style.color = type === "Income" ? "green" : "red";
+      item.style.fontWeight = "bold";
+    }
+
+    list.appendChild(item);
+    form.reset();
+  });
+
+  function updateTime() {
+    const now = new Date();
+    document.getElementById("datetime").innerText = now.toLocaleString();
+  }
+
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  function addRecurring() {
+    const recurring = [
+      { icon: "💰", category: "Salary", type: "Income", amount: 2500, tags: "monthly pay", date: new Date().toISOString().split("T")[0] },
+      { icon: "💸", category: "Rent", type: "Expense", amount: 800, tags: "apartment", date: new Date().toISOString().split("T")[0] }
+    ];
+
+    recurring.forEach(t => {
+      const item = document.createElement("li");
+      item.setAttribute("data-type", t.type);
+      item.textContent = `${t.icon} ${t.category} - $${t.amount} (${t.type}) — ${t.tags} on ${t.date}`;
+      list.appendChild(item);
+    });
+  }
+
+  function filterTransactions(type) {
+    const items = document.querySelectorAll("#transactionList li");
+    items.forEach(item => {
+      const itemType = item.getAttribute("data-type");
+      item.style.display = (type === "all" || itemType === type) ? "list-item" : "none";
+    });
+  }
+</script>
+
+</body>
+</html>

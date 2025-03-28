@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Budget - Finance App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff3e0;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #e65100;
+            padding: 1em;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffe082;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 70px auto;
+            background-color: #fff8e1;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        input, button {
+            padding: 0.8em;
+            margin-top: 1em;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #ff9800;
+            color: white;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #f57c00;
+        }
+
+        .summary {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        ul {
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+    <a href="/transactions">Transactions</a>
+    <a href="/budget">Budget</a>
+    <a href="/investments">Investments</a>
+</nav>
+
+    <div style="text-align: center; font-size: 0.9em; color: #666; margin-top: 5px;" id="datetime"></div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById("datetime").innerText = now.toLocaleString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+    
+
+<div class="container">
+    <h2>Set Your Monthly Budget</h2>
+
+    <form onsubmit="event.preventDefault(); calculateBudget();">
+        <input type="number" id="income" placeholder="Monthly Income" required />
+        <input type="number" id="fixedExpenses" placeholder="Fixed Expenses" required />
+        <input type="number" id="savingsGoal" placeholder="Savings Goal" required />
+        <button type="submit">Save Budget</button>
+    </form>
+
+    <div class="summary" id="budgetSummary"></div>
+
+    <ul>
+        <li>🏠 Rent: $800</li>
+        <li>📱 Phone: $50</li>
+        <li>💡 Utilities: $120</li>
+        <li>🛒 Groceries: $250</li>
+    </ul>
+</div>
+
+<script>
+    function calculateBudget() {
+        const income = parseFloat(document.getElementById("income").value);
+        const fixed = parseFloat(document.getElementById("fixedExpenses").value);
+        const savings = parseFloat(document.getElementById("savingsGoal").value);
+        const remaining = income - fixed - savings;
+
+        const summary = `
+            <p>Total Income: $${income.toFixed(2)}</p>
+            <p>Fixed Expenses: $${fixed.toFixed(2)}</p>
+            <p>Savings Goal: $${savings.toFixed(2)}</p>
+            <p>Remaining Budget: $${remaining.toFixed(2)}</p>
+        `;
+        document.getElementById("budgetSummary").innerHTML = summary;
+    }
+</script>
+
+</body>
+</html>

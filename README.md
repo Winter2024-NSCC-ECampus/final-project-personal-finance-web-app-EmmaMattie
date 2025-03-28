@@ -1,7 +1,7 @@
 # Personal Finance Web App
 
 A responsive web app built with J2EE to help users manage their money in a simple way.  
-You can record income and expenses, set budgets, track investments, and more — all without using a database.
+You can record income and expenses, set budgets, track investments, and more.
 
 ---
 
